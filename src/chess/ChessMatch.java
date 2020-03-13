@@ -30,9 +30,15 @@ public class ChessMatch {
     return mat;
     }
     
+    private void placeNewPiece(char column, int row, ChessPiece piece){
+        board.placePiece(piece, new ChessPosition(column,row).toPosition());
+    }
+    
     //Método responsável por colocar as peças no tabuleiro, iniciando a partida
     private void initialSetup(){
-        board.placePiece( new Rook(board, Color.BLACK), new Position(6,4)); // apenas um teste
+        // novo teste, passando como parâmetro uma peça já na forma como será mostrada no tabuleiro
+        placeNewPiece('b', 6, new Rook(board, Color.BLACK)); 
+        board.placePiece( new Rook(board, Color.BLACK), new Position(7,4)); // apenas um teste
     }
   
 }
