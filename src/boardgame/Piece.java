@@ -16,6 +16,7 @@ public class Piece {
 //Somente classes de uso interno do jogo de tabuleiro(tabuleiro e peça) e as peças específicas podem acessar essa clase
     protected Board getBoard(){ 
         return board;
-    }
+    } 
     
-}
+
+} 
