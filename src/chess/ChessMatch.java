@@ -17,11 +17,13 @@ public class ChessMatch {
     private ChessPiece enPassantVulnerable;
     private ChessPiece promoted;
     
+    //inicializando o tabuleiro já no método construtor
     public ChessMatch(){
         board = new Board(8,8);
         initialSetup();
     }
     
+    //alocando peças (ainda com valor nulo) no tabuleiro de xadrez
     public ChessPiece[][] getPieces(){
         ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
         for(int i = 0; i < board.getRows() ; i++){
@@ -30,10 +32,6 @@ public class ChessMatch {
             }
         }
     return mat;
-    }
-
-    public boolean[][] possibleMoves(ChessPosition sourcePosition){
-           
     }
     
     //Lógica de movimento e/ou captura de peças
@@ -57,16 +55,13 @@ public class ChessMatch {
         return captured;
     }
     
+    //Alocando determinada peça no tabuleiro
     private void placeNewPiece(char column, int row, ChessPiece piece){
         board.placePiece(piece, new ChessPosition(column,row).toPosition());
     }
     
-    //Método responsável por colocar as peças no tabuleiro, iniciando a partida
+    //Colocando todas as peças iniciais no tabuleiro
     private void initialSetup(){
-        // novo teste, passando como parâmetro uma peça já na forma como será mostrada no tabuleiro
-        //placeNewPiece('b', 6, new Rook(board, Color.BLACK)); 
-        //board.placePiece( new Rook(board, Color.BLACK), new Position(7,4)); // apenas um teste
-        
         placeNewPiece('c', 1, new Rook(board, Color.WHITE));
         placeNewPiece('c', 2, new Rook(board, Color.WHITE));
         placeNewPiece('d', 2, new Rook(board, Color.WHITE));

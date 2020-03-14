@@ -31,12 +31,14 @@ public class Board {
         return pieces[position.getRow()][position.getColumn()];
     }
     
+    //Colocando (na prática) uma peça no tabuleiro, serve para auxiliar a função placeNewPiece da classe ChessMatch
     public void placePiece(Piece piece, Position position){
         if(thereIsAPiece(position)) throw new BoardException("There is already a piece on position " + position);
         pieces[position.getRow()][position.getColumn()] = piece;
         piece.position = position;
     }
     
+    //Removendo uma peça do tabuleiro 
     public Piece removePiece(Position position){
         if (!positionExists(position)) throw new BoardException("Position not on the board! ");
         if(piece(position) == null) return null;
@@ -55,6 +57,7 @@ public class Board {
         return positionExists(position.getRow(), position.getColumn());
     }
     
+    //Verificando se há uma peça em determinada posição
     public boolean thereIsAPiece(Position position){
         if(!positionExists(position)) throw new BoardException("Position not on the board! ");
         if(piece(position) == null) return false;

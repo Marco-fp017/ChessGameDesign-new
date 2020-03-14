@@ -3,8 +3,8 @@ package boardgame;
 // Classe que cuida da criação, alocação e possíveis movimentos das peças
 public class Piece {
     /*Atributo protegido (essa não é uma posição do xadrez, é uma posição simples de matriz)
-                                    Protegido pois esse atributo não pode ser acessado pela classe do xadrez
-                                */
+    Protegido pois esse atributo não pode ser acessado pela classe do xadrez
+    */
     protected Position position; 
     private Board board;
     

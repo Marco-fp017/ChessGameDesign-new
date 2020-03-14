@@ -19,11 +19,13 @@ public class ChessPosition {
     public int getRow() {
         return row;
     }
-
+    
+    //Passando uma posição do formato visível ao usuário pro formato utilizado pelo programa
     protected Position toPosition(){
         return new Position(8 - row, column - 'a');
     }
     
+    //Operação inversa do método anterior
     protected ChessPosition fromPosition(Position position){
         return new ChessPosition((char)('a' - position.getColumn()), 8 - position.getRow());
     }
