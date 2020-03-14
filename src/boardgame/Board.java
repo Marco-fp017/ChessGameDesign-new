@@ -60,8 +60,7 @@ public class Board {
     //Verificando se há uma peça em determinada posição
     public boolean thereIsAPiece(Position position){
         if(!positionExists(position)) throw new BoardException("Position not on the board! ");
-        if(piece(position) == null) return false;
-        else return true;
+        return piece(position) != null;
     }
 }  
 
