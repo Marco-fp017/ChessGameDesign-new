@@ -5,13 +5,18 @@ import boardgame.Piece;
 import boardgame.Position;
 import chess.pieces.King;
 import chess.pieces.Rook;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChessMatch {
     
     private Board board;
-    
     private int turn;
     private Color currentPlayer;
+
+    private List<Piece> piecesOnTheBoard;
+    private List<Piece> capturedPieces = new ArrayList<>();
+    
     private boolean check;
     private boolean checkMate;
     private ChessPiece enPassantVulnerable;
@@ -20,7 +25,24 @@ public class ChessMatch {
     //inicializando o tabuleiro já no método construtor
     public ChessMatch(){
         board = new Board(8,8);
+        turn = 1;
+        currentPlayer = Color.WHITE;
+        piecesOnTheBoard = new ArrayList<>();
         initialSetup();
+    }
+    
+    public int getTurn() {
+        return turn;
+    }
+
+    public Color getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    private void nextTurn(){
+        turn++;
+        if (currentPlayer == Color.WHITE) currentPlayer = Color.BLACK;
+        else currentPlayer = Color.WHITE;
     }
     
     //alocando peças (ainda com valor nulo) no tabuleiro de xadrez
@@ -49,6 +71,7 @@ public class ChessMatch {
         validateSourcePosition(source);
         validateTargetPosition(source, target);
         Piece capturedPiece = makeMove(source, target);
+        nextTurn();
         return (ChessPiece) capturedPiece;
     }
     
@@ -56,6 +79,7 @@ public class ChessMatch {
     private void validateSourcePosition(Position position) {
         if(!board.thereIsAPiece(position)) throw new ChessException("There is no piece on source position! ");
         if(!board.piece(position).isThereAnyPossibleMove()) throw new ChessException("There is no possible moves for the chosen piece");
+        if (currentPlayer != ((ChessPiece)board.piece(position)).getColor()) throw new ChessException("The chosen piece is not yours ");
     }
 
     //verificando se a posição do tabuleiro para onde o usuário quer mover uma peça é válida/está preenchida
@@ -67,26 +91,33 @@ public class ChessMatch {
     private Piece makeMove(Position source, Position target) {
         Piece p = board.removePiece(source);
         Piece captured = board.removePiece(target);
+        
+        if(captured != null){
+            piecesOnTheBoard.remove(captured);
+            capturedPieces.add(captured);
+        }
+        
         board.placePiece(p, target);
         return captured;
     }
     
-    //Alocando determinada peça no tabuleiro
+    //Alocando determinada peça no tabuleiro e na lista de peças no tabuleiro
     private void placeNewPiece(char column, int row, ChessPiece piece){
         board.placePiece(piece, new ChessPosition(column,row).toPosition());
+        piecesOnTheBoard.add(piece);
     }
     
     //Colocando todas as peças iniciais no tabuleiro
     private void initialSetup(){
-        placeNewPiece('c', 1, new Rook(board, Color.WHITE));
-        placeNewPiece('c', 2, new Rook(board, Color.WHITE));
+        placeNewPiece('a', 1, new Rook(board, Color.WHITE));
+        placeNewPiece('h', 1, new Rook(board, Color.WHITE));
         placeNewPiece('d', 2, new Rook(board, Color.WHITE));
         placeNewPiece('e', 2, new Rook(board, Color.WHITE));
         placeNewPiece('e', 1, new Rook(board, Color.WHITE));
         placeNewPiece('d', 1, new King(board, Color.WHITE));
 
-        placeNewPiece('c', 7, new Rook(board, Color.BLACK));
-        placeNewPiece('c', 8, new Rook(board, Color.BLACK));
+        placeNewPiece('a', 8, new Rook(board, Color.BLACK));
+        placeNewPiece('h', 8, new Rook(board, Color.BLACK));
         placeNewPiece('d', 7, new Rook(board, Color.BLACK));
         placeNewPiece('e', 7, new Rook(board, Color.BLACK));
         placeNewPiece('e', 8, new Rook(board, Color.BLACK));
