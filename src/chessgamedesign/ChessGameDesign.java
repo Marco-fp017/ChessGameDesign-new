@@ -16,7 +16,7 @@ public class ChessGameDesign {
         ChessMatch ch = new ChessMatch();
         List<ChessPiece> cp = new ArrayList<>();
         
-        while(1 == 1){
+        while(!ch.getCheckMate()){
             try{
                 UI.clearScreen();
                 UI.printMatch(ch, cp);
@@ -43,6 +43,8 @@ public class ChessGameDesign {
                 sc.nextLine();                
             } 
         }
+        UI.clearScreen();
+        UI.printMatch(ch, cp);
     }
     
 }

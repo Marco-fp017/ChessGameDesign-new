@@ -57,8 +57,15 @@ public class UI {
         printCapturedPieces(cp);
         System.out.println();
         System.out.println("Turn: " + ch.getTurn());
-        System.out.println("Waiting Player: " + ch.getCurrentPlayer());
-        if(ch.getCheck()) System.out.println("CHECK!");
+        
+        if(!ch.getCheckMate()){
+            System.out.println("Waiting Player: " + ch.getCurrentPlayer());
+            if(ch.getCheck()) System.out.println("CHECK!");
+        }
+        else{
+            System.out.println("CHECKMATE!");
+            System.out.println("Winner: " + ch.getCurrentPlayer());
+        }
     }
     
     //Printar o tabuleiro e suas peças
