@@ -26,12 +26,19 @@ public class ChessMatch {
     //alocando peças (ainda com valor nulo) no tabuleiro de xadrez
     public ChessPiece[][] getPieces(){
         ChessPiece[][] mat = new ChessPiece[board.getRows()][board.getColumns()];
-        for(int i = 0; i < board.getRows() ; i++){
-            for(int j = 0; j < board.getColumns() ; j++){
+        for(int i = 0; i < board.getRows(); i++){
+            for(int j = 0; j < board.getColumns(); j++){
                 mat[i][j] = (ChessPiece) board.piece(i,j);
             }
         }
     return mat;
+    }
+    
+    public boolean[][] possibleMoves(ChessPosition sourcePosition){
+        Position position = sourcePosition.toPosition(); //conversão de posição de Xadrez em posição de matriz
+        validateSourcePosition(position); 
+        //validateTargetPosition(source, target);
+        return board.piece(position).possibleMoves();
     }
     
     //Lógica de movimento e/ou captura de peças
@@ -45,15 +52,18 @@ public class ChessMatch {
         return (ChessPiece) capturedPiece;
     }
     
+    //verificando se a posição da peça a ser movida no tabuleiro é válida/está preenchida
     private void validateSourcePosition(Position position) {
         if(!board.thereIsAPiece(position)) throw new ChessException("There is no piece on source position! ");
         if(!board.piece(position).isThereAnyPossibleMove()) throw new ChessException("There is no possible moves for the chosen piece");
     }
 
+    //verificando se a posição do tabuleiro para onde o usuário quer mover uma peça é válida/está preenchida
     private void validateTargetPosition(Position source, Position target) {
-        if(!board.piece(source).possibleMove(target)) new ChessException("The chosen piece can't move to target");
-    }    
+        if(!board.piece(source).possibleMove(target)) throw new ChessException("The chosen piece can't move to target position ");
+    }
     
+    //mover uma peça
     private Piece makeMove(Position source, Position target) {
         Piece p = board.removePiece(source);
         Piece captured = board.removePiece(target);
