@@ -6,10 +6,6 @@ import chess.ChessPiece;
 import chess.Color;
 
 public class Queen extends ChessPiece{
-
-    private Bishop bishop;
-    private Rook rook;
-    private ChessPiece cp;
     
     public Queen(Board board, Color color) {
         super(color, board);

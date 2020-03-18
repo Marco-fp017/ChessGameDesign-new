@@ -111,13 +111,30 @@ public class ChessMatch {
         ChessPiece p = (ChessPiece)board.removePiece(source);
         p.increaseMoveCount();
         Piece captured = board.removePiece(target);
+        board.placePiece(p, target);
         
         if(captured != null){
             piecesOnTheBoard.remove(captured);
             capturedPieces.add(captured);
         }
         
-        board.placePiece(p, target);
+        //Movendo peça vinda de um possivel 'roque'
+        if(p instanceof King && target.getColumn() == source.getColumn()+2){
+            //roque pequeno (mais proximo do rei)
+            Position sourcerq = new Position(source.getRow(),source.getColumn()+3);
+            Position targetrq = new Position(source.getRow(),source.getColumn()+1);
+            ChessPiece rookRoque = (ChessPiece)board.removePiece(sourcerq);
+            board.placePiece(rookRoque, targetrq);
+            rookRoque.increaseMoveCount();
+        }
+        if(p instanceof King && target.getColumn() == source.getColumn()-2){
+            //roque grande (mais proximo da rainha)
+            Position sourcerq = new Position(source.getRow(),source.getColumn()-4);
+            Position targetrq = new Position(source.getRow(),source.getColumn()-1);
+            ChessPiece rookRoque = (ChessPiece)board.removePiece(sourcerq);
+            board.placePiece(rookRoque, targetrq);
+            rookRoque.increaseMoveCount();
+        }
         return captured;
     }
     
@@ -131,6 +148,24 @@ public class ChessMatch {
             board.placePiece(capturedPiece, target);
             capturedPieces.remove(capturedPiece);
             piecesOnTheBoard.add(capturedPiece);
+        }
+        
+        //desfazer um roque caso necessário
+        if(p instanceof King && target.getColumn() == source.getColumn()+2){
+            //roque pequeno (mais proximo do rei)
+            Position sourcerq = new Position(source.getRow(),source.getColumn()+3);
+            Position targetrq = new Position(source.getRow(),source.getColumn()+1);
+            ChessPiece rookRoque = (ChessPiece)board.removePiece(targetrq);
+            board.placePiece(rookRoque, sourcerq);
+            rookRoque.decreaseMoveCount();
+        }
+        if(p instanceof King && target.getColumn() == source.getColumn()-2){
+            //roque grande (mais proximo da rainha)
+            Position sourcerq = new Position(source.getRow(),source.getColumn()-4);
+            Position targetrq = new Position(source.getRow(),source.getColumn()-1);
+            ChessPiece rookRoque = (ChessPiece)board.removePiece(targetrq);
+            board.placePiece(rookRoque, sourcerq);
+            rookRoque.decreaseMoveCount();
         }
     }
 
@@ -198,7 +233,7 @@ public class ChessMatch {
         placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
         placeNewPiece('b', 1, new Knight(board, Color.WHITE));
         placeNewPiece('g', 1, new Knight(board, Color.WHITE));
-        placeNewPiece('e', 1, new King(board, Color.WHITE));
+        placeNewPiece('e', 1, new King(board, Color.WHITE, this));
         placeNewPiece('d', 1, new Queen(board, Color.WHITE));
         placeNewPiece('a', 2, new Pawn(board, Color.WHITE));
         placeNewPiece('b', 2, new Pawn(board, Color.WHITE));
@@ -211,7 +246,7 @@ public class ChessMatch {
 
         placeNewPiece('a', 8, new Rook(board, Color.BLACK));
         placeNewPiece('h', 8, new Rook(board, Color.BLACK));
-        placeNewPiece('e', 8, new King(board, Color.BLACK));
+        placeNewPiece('e', 8, new King(board, Color.BLACK, this));
         placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
         placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
         placeNewPiece('b', 8, new Knight(board, Color.BLACK));
